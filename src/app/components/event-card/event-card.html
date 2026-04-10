@@ -1,0 +1,30 @@
+<div
+  class="event-card"
+  [class.mandatory]="event.isMandatory"
+  (click)="onClick()"
+>
+  <div class="event-card-header">
+    <span class="badge" [ngClass]="{
+      'badge-private': event.visibility === 'private',
+      'badge-group': event.visibility === 'group',
+      'badge-direct': event.visibility === 'direct'
+    }">
+      <i class="fas" [ngClass]="visibilityIcon"></i>
+      {{ event.visibility }}
+    </span>
+    <span class="badge badge-mandatory" *ngIf="event.isMandatory">
+      Mandatory
+    </span>
+  </div>
+
+  <h4 class="event-card-title">{{ event.title }}</h4>
+
+  <div class="event-card-details">
+    <span><i class="fas fa-clock"></i> {{ event.startTime }} - {{ event.endTime }}</span>
+    <span *ngIf="event.location"><i class="fas fa-map-marker-alt"></i> {{ event.location }}</span>
+    <span *ngIf="groupName"><i class="fas fa-users"></i> {{ groupName }}</span>
+    <span><i class="fas fa-user"></i> {{ creatorName }}</span>
+  </div>
+
+  <p class="event-card-desc" *ngIf="event.description">{{ event.description }}</p>
+</div>

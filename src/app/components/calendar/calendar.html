@@ -1,0 +1,52 @@
+<div class="calendar-wrapper">
+  <div class="calendar-header">
+    <div class="calendar-nav">
+      <button class="btn btn-secondary btn-sm" (click)="previousMonth()">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <h2 class="month-title">{{ monthYear }}</h2>
+      <button class="btn btn-secondary btn-sm" (click)="nextMonth()">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+    <button class="btn btn-sm btn-primary" (click)="goToToday()">Today</button>
+  </div>
+
+  <div class="calendar-legend">
+    <span class="legend-item"><span class="legend-dot private"></span> Private</span>
+    <span class="legend-item"><span class="legend-dot group"></span> Group</span>
+    <span class="legend-item"><span class="legend-dot direct"></span> Direct</span>
+    <span class="legend-item"><span class="legend-dot mandatory"></span> Mandatory</span>
+  </div>
+
+  <div class="calendar-grid">
+    <div class="day-header" *ngFor="let day of weekDays">{{ day }}</div>
+
+    <ng-container *ngFor="let week of weeks">
+      <div
+        *ngFor="let day of week"
+        class="day-cell"
+        [class.other-month]="!day.isCurrentMonth"
+        [class.today]="day.isToday"
+        (click)="onDateClick(day)"
+      >
+        <span class="day-number">{{ day.dayNumber }}</span>
+
+        <div class="day-events">
+          <div
+            *ngFor="let event of day.events; let i = index"
+            class="event-pill"
+            [ngClass]="getEventColorClass(event)"
+            (click)="onEventClick(event, $event)"
+            [title]="event.title"
+          >
+            <span *ngIf="i < 3" class="event-pill-text">{{ event.title }}</span>
+          </div>
+          <span *ngIf="day.events.length > 3" class="more-events">
+            +{{ day.events.length - 3 }} more
+          </span>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

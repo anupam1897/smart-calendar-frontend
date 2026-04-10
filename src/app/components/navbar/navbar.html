@@ -1,0 +1,30 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <a class="nav-brand" routerLink="/dashboard">
+      <i class="fas fa-calendar-alt"></i>
+      Smart Calendar
+    </a>
+
+    <div class="nav-links" *ngIf="user">
+      <a routerLink="/dashboard" routerLinkActive="active">
+        <i class="fas fa-th-large"></i> Dashboard
+      </a>
+      <a routerLink="/settings" routerLinkActive="active">
+        <i class="fas fa-cog"></i> Settings
+      </a>
+    </div>
+
+    <div class="nav-user" *ngIf="user">
+      <div class="user-info">
+        <span class="user-name">{{ user.name }}</span>
+        <span class="user-role badge" [ngClass]="{
+          'badge-group': user.role === 'teacher',
+          'badge-direct': user.role === 'student'
+        }">{{ user.role }}</span>
+      </div>
+      <button class="btn btn-sm btn-secondary" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </div>
+</nav>

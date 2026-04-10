@@ -1,0 +1,78 @@
+<app-navbar></app-navbar>
+
+<div class="dashboard-container">
+  <div class="alert alert-success" *ngIf="successMessage">
+    <i class="fas fa-check-circle"></i> {{ successMessage }}
+  </div>
+  <div class="alert alert-error" *ngIf="errorMessage">
+    <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+  </div>
+
+  <div class="dashboard-layout">
+    <div class="dashboard-main">
+      <app-calendar
+        [events]="events"
+        (dateClicked)="onDateClicked($event)"
+        (eventClicked)="onEventClicked($event)"
+      ></app-calendar>
+    </div>
+
+    <div class="dashboard-sidebar">
+      <div class="sidebar-card">
+        <h3 class="sidebar-title">
+          <i class="fas fa-clock"></i> Upcoming Events
+        </h3>
+        <div *ngIf="upcomingEvents.length === 0" class="empty-state">
+          <p>No upcoming events</p>
+        </div>
+        <div class="upcoming-list">
+          <app-event-card
+            *ngFor="let event of upcomingEvents"
+            [event]="event"
+            (edit)="onEventCardEdit($event)"
+          ></app-event-card>
+        </div>
+      </div>
+
+      <div class="sidebar-card" *ngIf="selectedDayLabel && !isModalOpen">
+        <h3 class="sidebar-title">
+          <i class="fas fa-calendar-day"></i> {{ selectedDayLabel }}
+        </h3>
+        <div *ngIf="selectedDayEvents.length === 0" class="empty-state">
+          <p>No events on this day</p>
+        </div>
+        <div class="upcoming-list">
+          <app-event-card
+            *ngFor="let event of selectedDayEvents"
+            [event]="event"
+            (edit)="onEventCardEdit($event)"
+          ></app-event-card>
+        </div>
+      </div>
+
+      <div class="sidebar-card stats-card">
+        <h3 class="sidebar-title"><i class="fas fa-chart-bar"></i> Quick Stats</h3>
+        <div class="stat-grid">
+          <div class="stat-item">
+            <span class="stat-number">{{ events.length }}</span>
+            <span class="stat-label">Total Events</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{ groups.length }}</span>
+            <span class="stat-label">Groups</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-event-modal
+  [isOpen]="isModalOpen"
+  [selectedDate]="selectedDate"
+  [editEvent]="editEvent"
+  [groups]="groups"
+  (close)="closeModal()"
+  (save)="onSaveEvent($event)"
+  (delete)="onDeleteEvent($event)"
+></app-event-modal>

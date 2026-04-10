@@ -1,0 +1,109 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ isEdit ? 'Edit Event' : 'Create Event' }}</h3>
+      <button class="modal-close" (click)="onClose()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="modal-body">
+      <div class="form-group">
+        <label>Event Name *</label>
+        <input class="form-control" formControlName="title" placeholder="Enter event name">
+      </div>
+
+      <div class="form-group">
+        <label>Event Type *</label>
+        <select class="form-control" formControlName="visibility" (change)="onVisibilityChange()">
+          <option value="private">🔒 Private</option>
+          <option value="group">👥 Group</option>
+          <option value="direct">📨 Direct</option>
+        </select>
+      </div>
+
+      <div class="form-group" *ngIf="form.get('visibility')?.value === 'group'">
+        <label>Select Group *</label>
+        <select class="form-control" formControlName="groupId">
+          <option value="">-- Choose a group --</option>
+          <option *ngFor="let g of groups" [value]="g._id">{{ g.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group" *ngIf="form.get('visibility')?.value === 'direct'">
+        <label>Share With Users *</label>
+        <div class="user-search">
+          <input
+            class="form-control"
+            [(ngModel)]="searchEmail"
+            [ngModelOptions]="{standalone: true}"
+            placeholder="Search by email..."
+            (input)="searchUser()"
+          >
+          <div class="search-results" *ngIf="searchResults.length > 0">
+            <div
+              class="search-item"
+              *ngFor="let u of searchResults"
+              (click)="addUser(u)"
+            >
+              <span>{{ u.name }}</span>
+              <small>{{ u.email }}</small>
+            </div>
+          </div>
+        </div>
+        <div class="selected-users" *ngIf="selectedUsers.length > 0">
+          <span class="user-chip" *ngFor="let u of selectedUsers">
+            {{ u.name || u.email }}
+            <i class="fas fa-times" (click)="removeUser(u._id)"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Date *</label>
+        <input type="date" class="form-control" formControlName="dateTime">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Start Time *</label>
+          <input type="time" class="form-control" formControlName="startTime">
+        </div>
+        <div class="form-group">
+          <label>End Time *</label>
+          <input type="time" class="form-control" formControlName="endTime">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Venue</label>
+        <input class="form-control" formControlName="location" placeholder="Enter venue/location">
+      </div>
+
+      <div class="form-group">
+        <label>Notes / Instructions</label>
+        <textarea class="form-control" formControlName="description" placeholder="Add any additional notes..."></textarea>
+      </div>
+
+      <div class="form-group checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="isMandatory">
+          <span>Mark as Mandatory</span>
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-danger btn-sm" *ngIf="isEdit" (click)="onDelete()">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+        <div class="action-right">
+          <button type="button" class="btn btn-secondary" (click)="onClose()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+            <i class="fas" [ngClass]="isEdit ? 'fa-save' : 'fa-plus'"></i>
+            {{ isEdit ? 'Update' : 'Create' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

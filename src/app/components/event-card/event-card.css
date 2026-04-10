@@ -1,0 +1,46 @@
+.event-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.event-card:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--primary-light);
+}
+
+.event-card.mandatory {
+  border-left: 4px solid var(--mandatory-color);
+}
+
+.event-card-header {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.event-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.event-card-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.event-card-details i { margin-right: 4px; width: 12px; }
+
+.event-card-desc {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
